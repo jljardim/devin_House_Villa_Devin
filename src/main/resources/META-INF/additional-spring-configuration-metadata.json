@@ -1,5 +1,32 @@
-{"properties": [{
-  "name": "ORCAMENTO_VILLA",
-  "type": "java.lang.String",
-  "description": "A description for 'ORCAMENTO_VILLA'"
-}]}
+{"properties": [
+  {
+    "name": "ORCAMENTO_VILLA",
+    "type": "java.lang.String",
+    "description": "A description for 'ORCAMENTO_VILLA'"
+  },
+  {
+    "name": "default.sender",
+    "type": "java.lang.String",
+    "description": "A description for 'default.sender'"
+  },
+  {
+    "name": "default.recipient",
+    "type": "java.lang.String",
+    "description": "A description for 'default.recipient'"
+  },
+  {
+    "name": "ORCAMENTO_VILLA",
+    "type": "java.lang.String",
+    "description": "A description for 'ORCAMENTO_VILLA'"
+  },
+  {
+    "name": "ORCAMENTO_VILLA",
+    "type": "java.lang.String",
+    "description": "A description for 'ORCAMENTO_VILLA'"
+  },
+  {
+    "name": "ORCAMENTO_VILLA",
+    "type": "java.lang.String",
+    "description": "A description for 'ORCAMENTO_VILLA'"
+  }
+]}

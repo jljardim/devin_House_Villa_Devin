@@ -91,25 +91,6 @@ public class MoradorDTO {
 		this.cpf = cpf;
 	}
 	
-//
-//	@Override
-//	public int hashCode() {
-//		return Objects.hash(cpf, data_Nasc, nome, renda, sobre_Nome, uuid);
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		MoradorDTO other = (MoradorDTO) obj;
-//		return Objects.equals(cpf, other.cpf) && Objects.equals(data_Nasc, other.data_Nasc)
-//				&& Objects.equals(nome, other.nome) && Objects.equals(renda, other.renda)
-//				&& Objects.equals(sobre_Nome, other.sobre_Nome) && Objects.equals(uuid, other.uuid);
-//	}
 
 	@Override
 	public String toString() {
