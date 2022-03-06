@@ -3,9 +3,11 @@ package dev.in.villaDevin.model.transport;
 import java.util.Date;
 import java.util.UUID;
 
+import dev.in.villaDevin.model.Morador;
+
 public class MoradorDTO {
 	
-	private Long id;
+	private Integer id;
 	private UUID uuid;
     private String nome;
     private String sobre_Nome;
@@ -14,6 +16,10 @@ public class MoradorDTO {
     private String cpf;
     
     public MoradorDTO() {
+    	
+    }
+    
+ public MoradorDTO(Morador morador) {
     	
     }
     
@@ -29,11 +35,11 @@ public class MoradorDTO {
 	
 	
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

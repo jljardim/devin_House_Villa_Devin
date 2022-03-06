@@ -3,9 +3,19 @@ package dev.in.villaDevin.model;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import dev.in.villaDevin.model.transport.MoradorDTO;
+
+
+@Entity
 public class Morador {
-	
-	private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private UUID uuid;
     private String nome;
     private String sobre_Nome;
@@ -16,6 +26,11 @@ public class Morador {
     public Morador() {
     	
     }
+    
+ public Morador(MoradorDTO moradorDTO) {
+    	
+    }
+    
     
 	public Morador(UUID uuid, String nome, String sobre_Nome, Date data_Nasc, Float renda, String cpf) {
 		super();
@@ -29,11 +44,11 @@ public class Morador {
 	
 	
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
