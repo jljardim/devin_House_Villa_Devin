@@ -1,6 +1,6 @@
 package dev.in.villaDevin.model.transport;
 
-public interface MoradorNameProjection {
+public interface ResidentNomeProjection {
 	
 	String getNome();
 

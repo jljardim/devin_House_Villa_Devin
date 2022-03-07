@@ -1,12 +1,20 @@
-package dev.in.villaDevin.model.transport;
+package dev.in.villaDevin.model;
 
 import java.util.Date;
 import java.util.UUID;
 
-import dev.in.villaDevin.model.Morador;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public class MoradorDTO {
-	
+import dev.in.villaDevin.model.transport.ResidentDTO;
+
+
+@Entity
+public class Resident {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private UUID uuid;
     private String nome;
@@ -15,15 +23,16 @@ public class MoradorDTO {
     private Float renda;
     private String cpf;
     
-    public MoradorDTO() {
+    public Resident() {
     	
     }
     
- public MoradorDTO(Morador morador) {
+ public Resident(ResidentDTO residentDTO) {
     	
     }
     
-	public MoradorDTO(UUID uuid, String nome, String sobre_Nome, Date data_Nasc, Float renda, String cpf) {
+    
+	public Resident(UUID uuid, String nome, String sobre_Nome, Date data_Nasc, Float renda, String cpf) {
 		super();
 		this.uuid = uuid;
 		this.nome = nome;
@@ -94,7 +103,7 @@ public class MoradorDTO {
 
 	@Override
 	public String toString() {
-		return "MoradorDTO [uuid=" + uuid + ", nome=" + nome + ", sobre_Nome=" + sobre_Nome + ", data_Nasc=" + data_Nasc
+		return "ResidentDTO [uuid=" + uuid + ", nome=" + nome + ", sobre_Nome=" + sobre_Nome + ", data_Nasc=" + data_Nasc
 				+ ", renda=" + renda + ", cpf=" + cpf + "]";
 	}
 
