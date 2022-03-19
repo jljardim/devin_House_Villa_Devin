@@ -1,8 +1,12 @@
 package dev.in.villaDevin.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
+//import java.util.UUID;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +20,13 @@ public class Resident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private UUID uuid;
-    private String nome;
-    private String sobre_Nome;
-    private Date data_Nasc;
-    private Float renda;
+	private String uuid;
+    private String name;
+    @Column(name = "lastname")
+    private String lastName;
+    @Column(name = "datenasc")
+    private LocalDate dateNasc;
+    private BigDecimal income;
     private String cpf;
     
     public Resident() {
@@ -28,17 +34,23 @@ public class Resident {
     }
     
  public Resident(ResidentDTO residentDTO) {
-    	
+	    this.name = residentDTO.getName();
+	    this.uuid = UUID.randomUUID().toString();
+		this.lastName = residentDTO.getLastName();
+		this.dateNasc = residentDTO.getDateNasc();
+		this.income = residentDTO.getIncome();
+		this.cpf = residentDTO.getCpf();
     }
     
     
-	public Resident(UUID uuid, String nome, String sobre_Nome, Date data_Nasc, Float renda, String cpf) {
+	public Resident(Integer id, String uuid, String name, String lastName, LocalDate dateNasc, BigDecimal income, String cpf) {
 		super();
+		this.id = id;
 		this.uuid = uuid;
-		this.nome = nome;
-		this.sobre_Nome = sobre_Nome;
-		this.data_Nasc = data_Nasc;
-		this.renda = renda;
+		this.name = name;
+		this.lastName = lastName;
+		this.dateNasc = dateNasc;
+		this.income = income;
 		this.cpf = cpf;
 	}
 	
@@ -52,44 +64,44 @@ public class Resident {
 		this.id = id;
 	}
 
-	public UUID getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(UUID uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
+    }
+
+	public String getName() {
+		return name;
 	}
 
-	public String getNome() {
-		return nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public String getSobre_Nome() {
-		return sobre_Nome;
+	public void setLastName(String lastName) {
+		this.lastName =lastName;
 	}
 
-	public void setSobre_Nome(String sobre_Nome) {
-		this.sobre_Nome = sobre_Nome;
+	public LocalDate getDateNasc() {
+		return dateNasc;
 	}
 
-	public Date getData_Nasc() {
-		return data_Nasc;
+	public void setDateNasc(LocalDate dateNasc) {
+		this.dateNasc = dateNasc;
 	}
 
-	public void setData_Nasc(Date data_Nasc) {
-		this.data_Nasc = data_Nasc;
+	public BigDecimal getIncome() {
+		return income;
 	}
 
-	public Float getRenda() {
-		return renda;
-	}
-
-	public void setRenda(Float renda) {
-		this.renda = renda;
+	public void setIncome(BigDecimal income) {
+		this.income = income;
 	}
 
 	public String getCpf() {
@@ -99,12 +111,22 @@ public class Resident {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
 
 	@Override
 	public String toString() {
-		return "ResidentDTO [uuid=" + uuid + ", nome=" + nome + ", sobre_Nome=" + sobre_Nome + ", data_Nasc=" + data_Nasc
-				+ ", renda=" + renda + ", cpf=" + cpf + "]";
+		return "Resident [uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc=" + dateNasc
+				+ ", income=" + income + ", cpf=" + cpf + "]";
 	}
+	
 
+
+	
+	
+	
+//
+//	@Override
+//	public String toString() {
+//		return "ResidentDTO [uuid="name=" + name + ", lastName=" + lastName + ", dateNasc=" + dateNasc
+//				+ ", income=" + income + ", cpf=" + cpf + "]";
+//	}
 }

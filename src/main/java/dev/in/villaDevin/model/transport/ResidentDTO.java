@@ -1,18 +1,20 @@
 package dev.in.villaDevin.model.transport;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+//import java.util.UUID;
 import java.util.UUID;
 
 import dev.in.villaDevin.model.Resident;
 
 public class ResidentDTO {
-	
+
 	private Integer id;
-	private UUID uuid;
-    private String nome;
-    private String sobre_Nome;
-    private Date data_Nasc;
-    private Float renda;
+	private String uuid;
+    private String name;
+    private String lastName;
+    private LocalDate dateNasc;
+    private BigDecimal income;
     private String cpf;
     
     public ResidentDTO() {
@@ -20,21 +22,28 @@ public class ResidentDTO {
     }
     
  public ResidentDTO(Resident resident) {
-    	
+	    this.id = resident.getId();
+	    this.uuid = resident.getUuid();
+	    this.name = resident.getName();
+		this.lastName = resident.getLastName();
+		this.dateNasc = resident.getDateNasc();
+		this.income = resident.getIncome();
+		this.cpf = resident.getCpf();
     }
     
-	public ResidentDTO(UUID uuid, String nome, String sobre_Nome, Date data_Nasc, Float renda, String cpf) {
+	public ResidentDTO( Integer id, String uuid, String name, String lastName, LocalDate dateNasc, BigDecimal income, String cpf) {
 		super();
+		this.id = id;
 		this.uuid = uuid;
-		this.nome = nome;
-		this.sobre_Nome = sobre_Nome;
-		this.data_Nasc = data_Nasc;
-		this.renda = renda;
+		this.name = name;
+		this.lastName = lastName;
+		this.dateNasc = dateNasc;
+		this.income = income;
 		this.cpf = cpf;
 	}
 	
 	
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -43,44 +52,45 @@ public class ResidentDTO {
 		this.id = id;
 	}
 
-	public UUID getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(UUID uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
-	public String getNome() {
-		return nome;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getSobre_Nome() {
-		return sobre_Nome;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSobre_Nome(String sobre_Nome) {
-		this.sobre_Nome = sobre_Nome;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public Date getData_Nasc() {
-		return data_Nasc;
+	public LocalDate getDateNasc() {
+		return dateNasc;
 	}
 
-	public void setData_Nasc(Date data_Nasc) {
-		this.data_Nasc = data_Nasc;
+	public void setDateNasc(LocalDate dateNasc) {
+		this.dateNasc = dateNasc;
 	}
 
-	public Float getRenda() {
-		return renda;
+	public BigDecimal getIncome() {
+		return income;
 	}
 
-	public void setRenda(Float renda) {
-		this.renda = renda;
+	public void setIncome(BigDecimal income) {
+		this.income = income;
 	}
 
 	public String getCpf() {
@@ -90,12 +100,14 @@ public class ResidentDTO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
 
 	@Override
 	public String toString() {
-		return "ResidentDTO [uuid=" + uuid + ", nome=" + nome + ", sobre_Nome=" + sobre_Nome + ", data_Nasc=" + data_Nasc
-				+ ", renda=" + renda + ", cpf=" + cpf + "]";
+		return "ResidentDTO [id=" + id + ", uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc="
+				+ dateNasc + ", income=" + income + ", cpf=" + cpf + "]";
 	}
+	
+
+	
 
 }

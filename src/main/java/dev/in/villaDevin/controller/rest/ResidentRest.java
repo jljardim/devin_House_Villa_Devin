@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.in.villaDevin.controller.service.ResidentService;
 import dev.in.villaDevin.exeptions.ResidentNotFoundExcetion;
+import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.transport.ResidentDTO;
-import dev.in.villaDevin.model.transport.ResidentNomeProjection;
+import dev.in.villaDevin.model.transport.ResidentFindAllProjection;
+import dev.in.villaDevin.model.transport.ResidentNameProjection;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/resident")
 public class ResidentRest {
@@ -30,10 +34,12 @@ public class ResidentRest {
 	}
 	
 
-	@GetMapping("/list-all")
-	public List<ResidentNomeProjection> listResident() throws SQLException {
+	
+	@GetMapping("/list-all")  // Workning this moment
+	public List<ResidentFindAllProjection> listResident() throws SQLException {
 		return residentService.listResident();
 	}
+	
 	
 
 	@GetMapping("/{id}")
@@ -59,4 +65,8 @@ public class ResidentRest {
 		return residentService.getResidentDTOByFilter(name);
 	}
 	
+//	@GetMapping("/list")
+//	public List<ResidentFindAllProjection> listResidentAll() throws SQLException {
+//		return residentService.listResidentAll();
+//	}
 }
