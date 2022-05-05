@@ -1,41 +1,26 @@
-package dev.in.villaDevin.model;
+package dev.in.villaDevin.model.transport;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import dev.in.villaDevin.model.Resident;
 
-import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
+public class CreateResidentResponseDTO {
 
-@Entity
-public class Resident {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String uuid;
+
 	private String name;
-	@Column(name = "lastname")
+
 	private String lastName;
-	@Column(name = "datenasc")
+
 	private LocalDate dateNasc;
 	private String email;
-	@Column(precision = 20, scale = 2, nullable = false)
 	private BigDecimal income;
 	private String cpf;
 
-	public Resident() {
-
-	}
-
-	public Resident(CreateResidentRequestDTO residentDTO) {
+	public CreateResidentResponseDTO(Resident residentDTO) {
+		this.id = residentDTO.getId();
 		this.name = residentDTO.getName();
-		this.uuid = UUID.randomUUID().toString();
 		this.lastName = residentDTO.getLastName();
 		this.dateNasc = residentDTO.getDateNasc();
 		this.email = residentDTO.getEmail();
@@ -43,11 +28,10 @@ public class Resident {
 		this.cpf = residentDTO.getCpf();
 	}
 
-	public Resident(Long id, String uuid, String name, String lastName, LocalDate dateNasc, String email,
-			BigDecimal income, String cpf) {
+	public CreateResidentResponseDTO(Long id, String name, String lastName, LocalDate dateNasc,
+			String email, BigDecimal income, String cpf) {
 		super();
 		this.id = id;
-		this.uuid = uuid;
 		this.name = name;
 		this.lastName = lastName;
 		this.dateNasc = dateNasc;
@@ -62,14 +46,6 @@ public class Resident {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	public String getName() {
@@ -119,14 +95,10 @@ public class Resident {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
-	  public static final Comparator<Resident> compareByCost = (Resident v1, Resident v2) -> {
-		  return v1.getIncome().compareTo(v2.getIncome());
-	    };
 
 	@Override
 	public String toString() {
-		return "Resident [id=" + id + ", uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc="
+		return "CreateResidentResponseDTO [id=" + id + ", name=" + name + ", lastName=" + lastName + ", dateNasc="
 				+ dateNasc + ", email=" + email + ", income=" + income + ", cpf=" + cpf + "]";
 	}
 
