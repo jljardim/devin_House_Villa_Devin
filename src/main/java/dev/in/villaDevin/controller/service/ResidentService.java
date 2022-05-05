@@ -1,5 +1,6 @@
 package dev.in.villaDevin.controller.service;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -7,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,12 +41,43 @@ public class ResidentService {
 	}
 
 	@Transactional(readOnly = false)
-	public CreateResidentResponseDTO create(CreateResidentRequestDTO createResidentDTO) throws ResidentNotFoundExcetion {
-		if (createResidentDTO == null) {
-			throw new IllegalArgumentException("O morador está nulo");
+	public CreateResidentResponseDTO create(CreateResidentRequestDTO createResidentDTO)
+			throws ResidentNotFoundExcetion {
+
+		if (!isValidCPF(createResidentDTO.getCpf())) {
+			throw new IllegalArgumentException("Cpf Invalido");
 		}
 
+		if (!isValidName(createResidentDTO.getName())) {
+			throw new IllegalArgumentException("Nome Invalido: Não pode conter espaços nem numero");
+		}
+		
+		if (!isValidName(createResidentDTO.getLastName())) {
+			throw new IllegalArgumentException("SobreNome Invalido: Não pode conter espaços nem numero");
+		}
+		
+		if (createResidentDTO.getIncome() == null) {
+			throw new IllegalArgumentException("Renda não pode ser estar vazia");
+		}
+		
+		if (createResidentDTO.getIncome().compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException("Renda não pode ser negativa ou igual a zero");
+		}
+		
+		if (createResidentDTO.getDateNasc() == null) {
+			throw new IllegalArgumentException("Data de nascimento não pode ser nulo.");
+		}
+		
+		if(LocalDate.now().isBefore(createResidentDTO.getDateNasc())) {
+			throw new IllegalArgumentException("Data de nascimento não pode maior do que hoje.");
+		}
+
+		// if (createResidentDTO == null) {
+//			throw new IllegalArgumentException("O morador está nulo");
+//		}
+
 		Resident resident = residentRepository.save(new Resident(createResidentDTO));
+		
 		CreateResidentResponseDTO saveResident = new CreateResidentResponseDTO(resident);
 
 		return saveResident;
@@ -53,6 +86,28 @@ public class ResidentService {
 	public List<ResidentNameAndIdProjection> listResident() throws SQLException {
 		return this.residentRepository.findAllResident();
 	}
+
+	// Validação
+
+	private boolean isValidCPF(final String cpf) {
+		if (null == cpf) {
+			return false;
+		}
+
+		final Pattern pattern = Pattern.compile("(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)");
+		return pattern.matcher(cpf).matches();
+	}
+
+	private boolean isValidName(final String name) {
+		if (null == name || name.trim().isEmpty()) {
+			return false;
+		}
+
+		final Pattern pattern = Pattern.compile("^[A-Za-zÀ-ÖØ-öø-ÿ]+(([',. -][A-Za-zÀ-ÖØ-öø-ÿ ])?[A-Za-zÀ-ÖØ-öø-ÿ])$");
+		return pattern.matcher(name).matches();
+	}
+
+	// Termino da validação
 
 	public CreateResidentRequestDTO getById(Long id) throws SQLException {
 
@@ -64,8 +119,7 @@ public class ResidentService {
 		return new CreateResidentRequestDTO(resident);
 	}
 
-	public List<ResidentNameAndIdProjection> getResidentDTOByFilter(String name) 
-			throws SQLException {
+	public List<ResidentNameAndIdProjection> getResidentDTOByFilter(String name) throws SQLException {
 
 		if (name == null || name.isEmpty()) {
 			throw new IllegalArgumentException("O nome não pode ser nulo");
@@ -83,20 +137,17 @@ public class ResidentService {
 		residentRepository.deleteById(id);
 	}
 
-	public List<ResidentsByMonthResponseDTO> getResidentFilterByMonth(String month) 
-			throws SQLException {
+	public List<ResidentsByMonthResponseDTO> getResidentFilterByMonth(String month) throws SQLException {
 
 		if (month == null || month.isEmpty()) {
 			throw new IllegalArgumentException("O mês não pode ser nulo");
 		}
 
 		List<Resident> residents = residentRepository.findAll();
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM")
-				.withLocale(new Locale("pt", "BR"));
 
-		List<ResidentsByMonthResponseDTO> filteredResidents = residents.stream()
-				.filter((resident) -> {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM").withLocale(new Locale("pt", "BR"));
+
+		List<ResidentsByMonthResponseDTO> filteredResidents = residents.stream().filter((resident) -> {
 			String monthNasc = resident.getDateNasc().format(formatter);
 			return monthNasc.equalsIgnoreCase(month);
 		}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
@@ -105,30 +156,27 @@ public class ResidentService {
 		return filteredResidents;
 
 	}
-	
-	public List<ResidentsByMonthResponseDTO> getResidentFilterByAge(Long age) 
-			throws SQLException {
-		
+
+	public List<ResidentsByMonthResponseDTO> getResidentFilterByAge(Long age) throws SQLException {
+
 		if (age == null) {
 			throw new IllegalArgumentException("O Idade não pode ser nulo");
 		}
-		
+
 		List<Resident> residentList = residentRepository.findAll();
-		
+
 		LocalDate now = LocalDate.now();
-		
-		List<ResidentsByMonthResponseDTO> filterResidentsAge = residentList
-				.stream().filter((resident) -> {
-				LocalDate dateBirthdayResident = resident.getDateNasc(); 
-				Period period = Period.between(now, dateBirthdayResident);
-				Integer ageResident = Math.abs(period.getYears());
-				return ageResident >= age;
-				}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
+
+		List<ResidentsByMonthResponseDTO> filterResidentsAge = residentList.stream().filter((resident) -> {
+			LocalDate dateBirthdayResident = resident.getDateNasc();
+			Period period = Period.between(now, dateBirthdayResident);
+			Integer ageResident = Math.abs(period.getYears());
+			return ageResident >= age;
+		}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
 				.collect(Collectors.toList());
-				
 
 		return filterResidentsAge;
-		
+
 	}
 
 }
