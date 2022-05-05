@@ -2,8 +2,6 @@ package dev.in.villaDevin.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
-//import java.util.UUID;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -14,53 +12,53 @@ import javax.persistence.Id;
 
 import dev.in.villaDevin.model.transport.ResidentDTO;
 
-
 @Entity
 public class Resident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String uuid;
-    private String name;
-    @Column(name = "lastname")
-    private String lastName;
-    @Column(name = "datenasc")
-    private LocalDate dateNasc;
-    private BigDecimal income;
-    private String cpf;
-    
-    public Resident() {
-    	
-    }
-    
- public Resident(ResidentDTO residentDTO) {
-	    this.name = residentDTO.getName();
-	    this.uuid = UUID.randomUUID().toString();
+	private String name;
+	@Column(name = "lastname")
+	private String lastName;
+	@Column(name = "datenasc")
+	private LocalDate dateNasc;
+	private String email;
+	private BigDecimal income;
+	private String cpf;
+
+	public Resident() {
+
+	}
+
+	public Resident(ResidentDTO residentDTO) {
+		this.name = residentDTO.getName();
+		this.uuid = UUID.randomUUID().toString();
 		this.lastName = residentDTO.getLastName();
 		this.dateNasc = residentDTO.getDateNasc();
+		this.email = residentDTO.getEmail();
 		this.income = residentDTO.getIncome();
 		this.cpf = residentDTO.getCpf();
-    }
-    
-    
-	public Resident(Integer id, String uuid, String name, String lastName, LocalDate dateNasc, BigDecimal income, String cpf) {
+	}
+
+	public Resident(Long id, String uuid, String name, String lastName, LocalDate dateNasc, String email,
+			BigDecimal income, String cpf) {
 		super();
 		this.id = id;
 		this.uuid = uuid;
 		this.name = name;
 		this.lastName = lastName;
 		this.dateNasc = dateNasc;
+		this.email = email;
 		this.income = income;
 		this.cpf = cpf;
 	}
-	
-	
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -70,7 +68,7 @@ public class Resident {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
-    }
+	}
 
 	public String getName() {
 		return name;
@@ -85,7 +83,7 @@ public class Resident {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName =lastName;
+		this.lastName = lastName;
 	}
 
 	public LocalDate getDateNasc() {
@@ -94,6 +92,14 @@ public class Resident {
 
 	public void setDateNasc(LocalDate dateNasc) {
 		this.dateNasc = dateNasc;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public BigDecimal getIncome() {
@@ -114,19 +120,8 @@ public class Resident {
 
 	@Override
 	public String toString() {
-		return "Resident [uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc=" + dateNasc
-				+ ", income=" + income + ", cpf=" + cpf + "]";
+		return "Resident [id=" + id + ", uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc="
+				+ dateNasc + ", email=" + email + ", income=" + income + ", cpf=" + cpf + "]";
 	}
-	
 
-
-	
-	
-	
-//
-//	@Override
-//	public String toString() {
-//		return "ResidentDTO [uuid="name=" + name + ", lastName=" + lastName + ", dateNasc=" + dateNasc
-//				+ ", income=" + income + ", cpf=" + cpf + "]";
-//	}
 }

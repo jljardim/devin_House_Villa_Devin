@@ -1,8 +1,8 @@
 package dev.in.villaDevin.model.transport;
 
-public interface ResidentNameProjection {
+public interface ResidentNameAndIdProjection {
 	
 	String getName();
-	String getLastName();
+	Long getId();
 
 }

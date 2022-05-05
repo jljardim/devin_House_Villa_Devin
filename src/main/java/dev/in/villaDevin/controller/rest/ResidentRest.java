@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,7 @@ import dev.in.villaDevin.controller.service.ResidentService;
 import dev.in.villaDevin.exeptions.ResidentNotFoundExcetion;
 import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.transport.ResidentDTO;
-import dev.in.villaDevin.model.transport.ResidentFindAllProjection;
-import dev.in.villaDevin.model.transport.ResidentNameProjection;
+import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -36,14 +36,19 @@ public class ResidentRest {
 
 	
 	@GetMapping("/list-all")  // Workning this moment
-	public List<ResidentFindAllProjection> listResident() throws SQLException {
+	public List<ResidentNameAndIdProjection> listResident() throws SQLException {
 		return residentService.listResident();
 	}
 	
 	
 
+	/*
+	 * @GetMapping("/{id}") public List<ResidentFindAllProjection>
+	 * getById(@PathVariable("id") Long id) { return residentService.; }
+	 */
+	
 	@GetMapping("/{id}")
-	public ResidentDTO getById(@PathVariable("id") Integer id) throws SQLException {
+	public ResidentDTO getById(@PathVariable("id") Long id) throws SQLException {
 		return residentService.getById(id);
 	}
 	
@@ -60,10 +65,18 @@ public class ResidentRest {
 	
 	
 	@GetMapping("/filter")
-	public List<ResidentDTO> getResidentByFilter(@RequestParam("name") String name)
+	public List<ResidentNameAndIdProjection> getResidentByFilter(@RequestParam("name") String name)
 			throws  SQLException {
 		return residentService.getResidentDTOByFilter(name);
 	}
+	
+	@DeleteMapping("/delete")
+	public void deleteById(@RequestParam("id")Long id) throws IllegalArgumentException {
+		residentService.delete(id);
+		ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso!");
+	}
+	
+	//@GetMapping("/month")
 	
 //	@GetMapping("/list")
 //	public List<ResidentFindAllProjection> listResidentAll() throws SQLException {

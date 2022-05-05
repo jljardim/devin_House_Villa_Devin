@@ -1,8 +1,6 @@
 package dev.in.villaDevin.model.repository;
 
-//import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,11 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.transport.ResidentDTO;
-import dev.in.villaDevin.model.transport.ResidentFindAllProjection;
-import dev.in.villaDevin.model.transport.ResidentNameProjection;
+import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
+
 
 @Repository
-public interface ResidentRepository extends CrudRepository<Resident, Integer> {
+public interface ResidentRepository extends CrudRepository<Resident, Long> {
 	
 	public List<Resident> findByName(String name);
 	
@@ -22,9 +20,13 @@ public interface ResidentRepository extends CrudRepository<Resident, Integer> {
 	public List<Resident> findByNameDTO(String name);
 	
 	@Query("SELECT a FROM Resident a WHERE a.name =:name")
-	public List<ResidentDTO> findDTOByName(String name);
+	public List<ResidentNameAndIdProjection> findDTOByName(String name);
 	
-	public Resident findAllById(Integer id);
+	public Resident findAllById(Long id);
+	
+	//public ResidentDTO findAllById(Long id);
+	
+	public void deleteById(Long id);
 	
 //	@Query(value = "SELECT * FROM resident", nativeQuery = true)
 //	public List<ResidentDTO> findById(Integer id);
@@ -34,8 +36,9 @@ public interface ResidentRepository extends CrudRepository<Resident, Integer> {
 //	public List<Resident> findByNomeDTO3(String nome);
 	
 	// Faz a mesma coisa que as queries acima porem foi criado uma interface para essa facilitand assim o trabalho
+	
 	@Query(value = "SELECT * FROM resident", nativeQuery = true)
-	public List<ResidentFindAllProjection> findAllResident();
+	public List<ResidentNameAndIdProjection> findAllResident();
 	
 	
 //	public List<Resident>  findByData_NascGreaterThan(Date data_Nasc);
