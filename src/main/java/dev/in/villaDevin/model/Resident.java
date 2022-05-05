@@ -5,11 +5,15 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
 
@@ -28,6 +32,13 @@ public class Resident {
 	@Column(precision = 20, scale = 2, nullable = false)
 	private BigDecimal income;
 	private String cpf;
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(
+        name = "user_id",
+        referencedColumnName = "id"
+    )
+    private User user;
 
 	public Resident() {
 
@@ -54,6 +65,16 @@ public class Resident {
 		this.email = email;
 		this.income = income;
 		this.cpf = cpf;
+	}
+	
+	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Long getId() {
