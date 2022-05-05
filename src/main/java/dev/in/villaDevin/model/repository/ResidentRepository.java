@@ -9,12 +9,13 @@ import org.springframework.stereotype.Repository;
 import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.transport.ResidentDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
+import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
 
 @Repository
 public interface ResidentRepository extends CrudRepository<Resident, Long> {
 	
-	public List<Resident> findByName(String name);
+	public List<ResidentNameAndIdProjection> findByName(String name);
 	
 	@Query("SELECT a FROM Resident a WHERE a.name =:name")
 	public List<Resident> findByNameDTO(String name);

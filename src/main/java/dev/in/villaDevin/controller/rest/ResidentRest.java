@@ -83,8 +83,9 @@ public class ResidentRest {
 		return residentService.getResidentFilterByMonth(month);
 	} 
 	
-//	@GetMapping("/list")
-//	public List<ResidentFindAllProjection> listResidentAll() throws SQLException {
-//		return residentService.listResidentAll();
-//	}
+	@GetMapping("/filter-age")
+	public List<ResidentsByMonthResponseDTO> listResidentAll(@RequestParam("age") Long age)
+			throws SQLException {
+		return residentService.getResidentFilterByAge(age);
+	}
 }

@@ -1,6 +1,8 @@
 package dev.in.villaDevin.controller.service;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,59 +52,28 @@ public class ResidentService {
 		return this.residentRepository.findAllResident();
 	}
 
-	
-	  public ResidentDTO getById(Long id) throws SQLException {
-	 
-	  
-	  if (id == null) { throw new
-	  IllegalArgumentException("O id não pode ser nulo"); }
-	  
-	  Resident resident = this.residentRepository.findAllById(id); return new
-	  ResidentDTO(resident); }
-	
+	public ResidentDTO getById(Long id) throws SQLException {
 
-//	public ResidentDTO getById(String id) throws SQLException {
-//		
-//		if(id == null) {
-//			throw new IllegalArgumentException("O Id não pode ser nulo");
-//		}
-//		
-//		Optional<Resident> resident = residentRepository.findById(id);
-//		
-//		if(resident.isPresent()) {
-//			return new ResidentDTO(resident.get());
-//		}
-//		return null;
-//	}
+		if (id == null) {
+			throw new IllegalArgumentException("O id não pode ser nulo");
+		}
 
-//	public List<ResidentDTO> getResidentByFilterService(String nome) throws SQLException {
-//		
-//		if(nome == null || nome.isEmpty()) {
-//			throw new IllegalArgumentException("O nome não pode ser nulo");
-//		}
-//		
-//		List<Resident> resident = residentRepository.findByNome(nome);
-//		if(!resident.isEmpty()) {
-//			return resident.stream().map(ResidentDTO::new).collect(Collectors.toList());
-//		}
-//		return new ArrayList<>();
-//		
-//	}
+		Resident resident = this.residentRepository.findAllById(id);
+		return new ResidentDTO(resident);
+	}
 
-	// Esse metodo getMoradorDTOByFilter faz a mesma que o getMoradorByFilter porem
-	// esse metodo usa projeção
-	// como o metodo criado no MoradorRepository
-	public List<ResidentNameAndIdProjection> getResidentDTOByFilter(String name) throws SQLException {
+	public List<ResidentNameAndIdProjection> getResidentDTOByFilter(String name) 
+			throws SQLException {
 
 		if (name == null || name.isEmpty()) {
 			throw new IllegalArgumentException("O nome não pode ser nulo");
 		}
 
-		List<ResidentNameAndIdProjection> resident = residentRepository.findDTOByName(name);
+		List<ResidentNameAndIdProjection> resident = residentRepository.findByName(name);
 		if (!resident.isEmpty()) {
 			return resident;
 		}
-		return new ArrayList<>();
+		return resident;
 
 	}
 
@@ -110,24 +81,52 @@ public class ResidentService {
 		residentRepository.deleteById(id);
 	}
 
-	public List<ResidentsByMonthResponseDTO> getResidentFilterByMonth(String month) throws SQLException {
+	public List<ResidentsByMonthResponseDTO> getResidentFilterByMonth(String month) 
+			throws SQLException {
 
 		if (month == null || month.isEmpty()) {
 			throw new IllegalArgumentException("O mês não pode ser nulo");
 		}
 
 		List<Resident> residents = residentRepository.findAll();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM").withLocale(
-				new Locale("pt","BR"));
 		
-		List<ResidentsByMonthResponseDTO> filteredResidents = residents.stream().filter((resident)->{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM")
+				.withLocale(new Locale("pt", "BR"));
+
+		List<ResidentsByMonthResponseDTO> filteredResidents = residents.stream()
+				.filter((resident) -> {
 			String monthNasc = resident.getDateNasc().format(formatter);
 			return monthNasc.equalsIgnoreCase(month);
 		}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
 				.collect(Collectors.toList());
-		
+
 		return filteredResidents;
 
+	}
+	
+	public List<ResidentsByMonthResponseDTO> getResidentFilterByAge(Long age) 
+			throws SQLException {
+		
+		if (age == null) {
+			throw new IllegalArgumentException("O Idade não pode ser nulo");
+		}
+		
+		List<Resident> residentList = residentRepository.findAll();
+		
+		LocalDate now = LocalDate.now();
+		
+		List<ResidentsByMonthResponseDTO> filterResidentsAge = residentList
+				.stream().filter((resident) -> {
+				LocalDate dateBirthdayResident = resident.getDateNasc(); 
+				Period period = Period.between(now, dateBirthdayResident);
+				Integer ageResident = Math.abs(period.getYears());
+				return ageResident >= age;
+				}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
+				.collect(Collectors.toList());
+				
+
+		return filterResidentsAge;
+		
 	}
 
 }

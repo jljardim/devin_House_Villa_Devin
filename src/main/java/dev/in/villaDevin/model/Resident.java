@@ -14,7 +14,7 @@ import dev.in.villaDevin.model.transport.ResidentDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 
 @Entity
-public class Resident implements ResidentNameAndIdProjection{
+public class Resident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
