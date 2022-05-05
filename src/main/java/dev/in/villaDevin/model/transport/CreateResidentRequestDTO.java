@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import dev.in.villaDevin.model.Resident;
 
-public class ResidentDTO {
+public class CreateResidentRequestDTO {
 
 	private Long id;
 	private String uuid;
@@ -16,11 +16,11 @@ public class ResidentDTO {
 	private BigDecimal income;
 	private String cpf;
 
-	public ResidentDTO() {
+	public CreateResidentRequestDTO() {
 
 	}
 
-	public ResidentDTO(Resident resident) {
+	public CreateResidentRequestDTO(Resident resident) {
 		this.id = resident.getId();
 		this.uuid = resident.getUuid();
 		this.name = resident.getName();
@@ -31,7 +31,7 @@ public class ResidentDTO {
 		this.cpf = resident.getCpf();
 	}
 
-	public ResidentDTO(Long id, String uuid, String name, String lastName, LocalDate dateNasc, String email,
+	public CreateResidentRequestDTO(Long id, String uuid, String name, String lastName, LocalDate dateNasc, String email,
 			BigDecimal income, String cpf) {
 		super();
 		this.id = id;

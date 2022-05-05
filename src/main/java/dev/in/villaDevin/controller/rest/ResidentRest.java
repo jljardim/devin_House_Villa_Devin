@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.in.villaDevin.controller.service.ResidentService;
 import dev.in.villaDevin.exeptions.ResidentNotFoundExcetion;
 import dev.in.villaDevin.model.Resident;
-import dev.in.villaDevin.model.transport.ResidentDTO;
+import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
+import dev.in.villaDevin.model.transport.CreateResidentResponseDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
@@ -49,15 +50,15 @@ public class ResidentRest {
 	 */
 	
 	@GetMapping("/{id}")
-	public ResidentDTO getById(@PathVariable("id") Long id) throws SQLException {
+	public CreateResidentRequestDTO getById(@PathVariable("id") Long id) throws SQLException {
 		return residentService.getById(id);
 	}
 	
-	
 	@PostMapping("/create")
-	public ResponseEntity<ResidentDTO> createNewResident(@RequestBody ResidentDTO resident) throws SQLException,
+	public ResponseEntity<CreateResidentResponseDTO> createNewResident(@RequestBody CreateResidentRequestDTO resident)
+			throws SQLException,
 	ResidentNotFoundExcetion {
-		ResidentDTO residentCreated = this.residentService.create(resident);
+		CreateResidentResponseDTO residentCreated = this.residentService.create(resident);
 		if(residentCreated == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}

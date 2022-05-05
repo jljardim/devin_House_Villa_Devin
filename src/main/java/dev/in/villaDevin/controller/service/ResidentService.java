@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import dev.in.villaDevin.exeptions.ResidentNotFoundExcetion;
 import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.repository.ResidentRepository;
-import dev.in.villaDevin.model.transport.ResidentDTO;
+import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
+import dev.in.villaDevin.model.transport.CreateResidentResponseDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
@@ -38,28 +39,29 @@ public class ResidentService {
 	}
 
 	@Transactional(readOnly = false)
-	public ResidentDTO create(ResidentDTO resident) throws ResidentNotFoundExcetion {
-		if (resident == null) {
+	public CreateResidentResponseDTO create(CreateResidentRequestDTO createResidentDTO) throws ResidentNotFoundExcetion {
+		if (createResidentDTO == null) {
 			throw new IllegalArgumentException("O morador está nulo");
 		}
 
-		Resident saveResident = residentRepository.save(new Resident(resident));
+		Resident resident = residentRepository.save(new Resident(createResidentDTO));
+		CreateResidentResponseDTO saveResident = new CreateResidentResponseDTO(resident);
 
-		return new ResidentDTO(saveResident);
+		return saveResident;
 	}
 
 	public List<ResidentNameAndIdProjection> listResident() throws SQLException {
 		return this.residentRepository.findAllResident();
 	}
 
-	public ResidentDTO getById(Long id) throws SQLException {
+	public CreateResidentRequestDTO getById(Long id) throws SQLException {
 
 		if (id == null) {
 			throw new IllegalArgumentException("O id não pode ser nulo");
 		}
 
 		Resident resident = this.residentRepository.findAllById(id);
-		return new ResidentDTO(resident);
+		return new CreateResidentRequestDTO(resident);
 	}
 
 	public List<ResidentNameAndIdProjection> getResidentDTOByFilter(String name) 

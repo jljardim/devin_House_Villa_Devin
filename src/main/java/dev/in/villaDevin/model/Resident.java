@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import dev.in.villaDevin.model.transport.ResidentDTO;
+import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 
 @Entity
@@ -32,7 +32,7 @@ public class Resident {
 
 	}
 
-	public Resident(ResidentDTO residentDTO) {
+	public Resident(CreateResidentRequestDTO residentDTO) {
 		this.name = residentDTO.getName();
 		this.uuid = UUID.randomUUID().toString();
 		this.lastName = residentDTO.getLastName();

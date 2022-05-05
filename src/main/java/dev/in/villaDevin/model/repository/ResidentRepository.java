@@ -7,9 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import dev.in.villaDevin.model.Resident;
-import dev.in.villaDevin.model.transport.ResidentDTO;
+import dev.in.villaDevin.model.transport.CreateResidentResponseDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
-import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
 
 @Repository
@@ -27,6 +26,9 @@ public interface ResidentRepository extends CrudRepository<Resident, Long> {
 	
 	public List<Resident> findAll();
 	
+	
+	//public CreateResidentResponseProjection save(Resident entity, Class<CreateResidentResponseProjection> type);
+	 //<T> T save(Resident entityResident, Class<T> type);
 	//public ResidentDTO findAllById(Long id);
 	
 	public void deleteById(Long id);
