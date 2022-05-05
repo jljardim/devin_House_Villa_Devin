@@ -2,6 +2,7 @@ package dev.in.villaDevin.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import dev.in.villaDevin.model.transport.CreateResidentRequestDTO;
-import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 
 @Entity
 public class Resident {
@@ -118,6 +118,10 @@ public class Resident {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
+	  public static final Comparator<Resident> compareByCost = (Resident v1, Resident v2) -> {
+		  return v1.getIncome().compareTo(v2.getIncome());
+	    };
 
 	@Override
 	public String toString() {

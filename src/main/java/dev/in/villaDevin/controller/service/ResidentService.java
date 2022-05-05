@@ -31,9 +31,7 @@ public class ResidentService {
 
 	private final Logger LOG = LogManager.getLogger(ResidentService.class);
 
-	@Value("${ORCAMENTO_VILLA}")
-	private Double OrcamentoDaVilla;
-
+	
 	private ResidentRepository residentRepository;
 
 	public ResidentService(ResidentRepository residentRepository) {
@@ -86,8 +84,11 @@ public class ResidentService {
 	public List<ResidentNameAndIdProjection> listResident() throws SQLException {
 		return this.residentRepository.findAllResident();
 	}
+	
+	public List<Resident> getListAllResidents() throws SQLException {
+		return this.residentRepository.findAll();
+	}
 
-	// Validação
 
 	private boolean isValidCPF(final String cpf) {
 		if (null == cpf) {
@@ -107,7 +108,6 @@ public class ResidentService {
 		return pattern.matcher(name).matches();
 	}
 
-	// Termino da validação
 
 	public CreateResidentRequestDTO getById(Long id) throws SQLException {
 
