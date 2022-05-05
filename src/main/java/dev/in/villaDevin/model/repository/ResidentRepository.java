@@ -24,6 +24,8 @@ public interface ResidentRepository extends CrudRepository<Resident, Long> {
 	
 	public Resident findAllById(Long id);
 	
+	public List<Resident> findAll();
+	
 	//public ResidentDTO findAllById(Long id);
 	
 	public void deleteById(Long id);

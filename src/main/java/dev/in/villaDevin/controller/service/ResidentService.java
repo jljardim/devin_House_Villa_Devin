@@ -1,12 +1,16 @@
 package dev.in.villaDevin.controller.service;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,6 +107,25 @@ public class ResidentService {
 
 	public void delete(Long id) throws IllegalArgumentException {
 		residentRepository.deleteById(id);
+	}
+
+	public List<ResidentNameAndIdProjection> getResidentFilterByMonth(String month) throws SQLException {
+
+		if (month == null || month.isEmpty()) {
+			throw new IllegalArgumentException("O mês não pode ser nulo");
+		}
+
+		List<Resident> residents = residentRepository.findAll();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM").withLocale(
+				new Locale("pt","BR"));
+		
+		List<ResidentNameAndIdProjection> filteredResidents = residents.stream().filter((resident)->{
+			String monthNasc = resident.getDateNasc().format(formatter);
+			return monthNasc.equalsIgnoreCase(month);
+		}).collect(Collectors.toList());
+		
+		return filteredResidents;
+
 	}
 
 }

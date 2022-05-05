@@ -11,9 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import dev.in.villaDevin.model.transport.ResidentDTO;
+import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
 
 @Entity
-public class Resident {
+public class Resident implements ResidentNameAndIdProjection{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

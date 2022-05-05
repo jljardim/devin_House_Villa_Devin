@@ -76,7 +76,11 @@ public class ResidentRest {
 		ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso!");
 	}
 	
-	//@GetMapping("/month")
+	@GetMapping("/filter-month")
+	public List<ResidentNameAndIdProjection> getResidentByFilterMonth(@RequestParam("month") String month)
+			throws  SQLException {
+		return residentService.getResidentFilterByMonth(month);
+	} 
 	
 //	@GetMapping("/list")
 //	public List<ResidentFindAllProjection> listResidentAll() throws SQLException {
