@@ -19,6 +19,7 @@ import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.repository.ResidentRepository;
 import dev.in.villaDevin.model.transport.ResidentDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
+import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
 @Service
 public class ResidentService {
@@ -109,7 +110,7 @@ public class ResidentService {
 		residentRepository.deleteById(id);
 	}
 
-	public List<ResidentNameAndIdProjection> getResidentFilterByMonth(String month) throws SQLException {
+	public List<ResidentsByMonthResponseDTO> getResidentFilterByMonth(String month) throws SQLException {
 
 		if (month == null || month.isEmpty()) {
 			throw new IllegalArgumentException("O mês não pode ser nulo");
@@ -119,10 +120,11 @@ public class ResidentService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM").withLocale(
 				new Locale("pt","BR"));
 		
-		List<ResidentNameAndIdProjection> filteredResidents = residents.stream().filter((resident)->{
+		List<ResidentsByMonthResponseDTO> filteredResidents = residents.stream().filter((resident)->{
 			String monthNasc = resident.getDateNasc().format(formatter);
 			return monthNasc.equalsIgnoreCase(month);
-		}).collect(Collectors.toList());
+		}).map(resident -> new ResidentsByMonthResponseDTO(resident.getName(), resident.getId()))
+				.collect(Collectors.toList());
 		
 		return filteredResidents;
 

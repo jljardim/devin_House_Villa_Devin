@@ -20,6 +20,7 @@ import dev.in.villaDevin.exeptions.ResidentNotFoundExcetion;
 import dev.in.villaDevin.model.Resident;
 import dev.in.villaDevin.model.transport.ResidentDTO;
 import dev.in.villaDevin.model.transport.ResidentNameAndIdProjection;
+import dev.in.villaDevin.model.transport.ResidentsByMonthResponseDTO;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -77,7 +78,7 @@ public class ResidentRest {
 	}
 	
 	@GetMapping("/filter-month")
-	public List<ResidentNameAndIdProjection> getResidentByFilterMonth(@RequestParam("month") String month)
+	public List<ResidentsByMonthResponseDTO> getResidentByFilterMonth(@RequestParam("month") String month)
 			throws  SQLException {
 		return residentService.getResidentFilterByMonth(month);
 	} 
