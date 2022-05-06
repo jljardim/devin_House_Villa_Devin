@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -31,16 +32,18 @@ public class ResidentService {
 
 	private final Logger LOG = LogManager.getLogger(ResidentService.class);
 
-	
 	private ResidentRepository residentRepository;
 
-	public ResidentService(ResidentRepository residentRepository) {
+	private UserService userService;
+
+	public ResidentService(ResidentRepository residentRepository, UserService userService) {
 		this.residentRepository = residentRepository;
+		this.userService = userService;
 	}
 
 	@Transactional(readOnly = false)
 	public CreateResidentResponseDTO create(CreateResidentRequestDTO createResidentDTO)
-			throws ResidentNotFoundExcetion {
+			throws Exception {
 
 		if (!isValidCPF(createResidentDTO.getCpf())) {
 			throw new IllegalArgumentException("Cpf Invalido");
@@ -49,24 +52,24 @@ public class ResidentService {
 		if (!isValidName(createResidentDTO.getName())) {
 			throw new IllegalArgumentException("Nome Invalido: Não pode conter espaços nem numero");
 		}
-		
+
 		if (!isValidName(createResidentDTO.getLastName())) {
 			throw new IllegalArgumentException("SobreNome Invalido: Não pode conter espaços nem numero");
 		}
-		
+
 		if (createResidentDTO.getIncome() == null) {
 			throw new IllegalArgumentException("Renda não pode ser estar vazia");
 		}
-		
+
 		if (createResidentDTO.getIncome().compareTo(BigDecimal.ZERO) <= 0) {
 			throw new IllegalArgumentException("Renda não pode ser negativa ou igual a zero");
 		}
-		
+
 		if (createResidentDTO.getDateNasc() == null) {
 			throw new IllegalArgumentException("Data de nascimento não pode ser nulo.");
 		}
-		
-		if(LocalDate.now().isBefore(createResidentDTO.getDateNasc())) {
+
+		if (LocalDate.now().isBefore(createResidentDTO.getDateNasc())) {
 			throw new IllegalArgumentException("Data de nascimento não pode maior do que hoje.");
 		}
 
@@ -74,8 +77,14 @@ public class ResidentService {
 //			throw new IllegalArgumentException("O morador está nulo");
 //		}
 
-		Resident resident = residentRepository.save(new Resident(createResidentDTO));
-		
+		Resident resident = new Resident(createResidentDTO);
+
+		userService.create(resident, 
+				createResidentDTO.getEmail(), 
+				createResidentDTO.getPassword(),
+				Set.copyOf(createResidentDTO.getRoles()));
+		residentRepository.save(resident);
+
 		CreateResidentResponseDTO saveResident = new CreateResidentResponseDTO(resident);
 
 		return saveResident;
@@ -84,11 +93,10 @@ public class ResidentService {
 	public List<ResidentNameAndIdProjection> listResident() throws SQLException {
 		return this.residentRepository.findAllResident();
 	}
-	
+
 	public List<Resident> getListAllResidents() throws SQLException {
 		return this.residentRepository.findAll();
 	}
-
 
 	private boolean isValidCPF(final String cpf) {
 		if (null == cpf) {
@@ -107,7 +115,6 @@ public class ResidentService {
 		final Pattern pattern = Pattern.compile("^[A-Za-zÀ-ÖØ-öø-ÿ]+(([',. -][A-Za-zÀ-ÖØ-öø-ÿ ])?[A-Za-zÀ-ÖØ-öø-ÿ])$");
 		return pattern.matcher(name).matches();
 	}
-
 
 	public CreateResidentRequestDTO getById(Long id) throws SQLException {
 

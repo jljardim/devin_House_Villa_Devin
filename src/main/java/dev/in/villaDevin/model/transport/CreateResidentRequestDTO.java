@@ -2,27 +2,29 @@ package dev.in.villaDevin.model.transport;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import dev.in.villaDevin.model.Resident;
 
 public class CreateResidentRequestDTO {
 
-	private Long id;
-	private String uuid;
 	private String name;
 	private String lastName;
 	private LocalDate dateNasc;
 	private String email;
 	private BigDecimal income;
 	private String cpf;
+	private String password;
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
+	private List<String> roles;
 
 	public CreateResidentRequestDTO() {
 
 	}
 
 	public CreateResidentRequestDTO(Resident resident) {
-		this.id = resident.getId();
-		this.uuid = resident.getUuid();
 		this.name = resident.getName();
 		this.lastName = resident.getLastName();
 		this.dateNasc = resident.getDateNasc();
@@ -31,11 +33,9 @@ public class CreateResidentRequestDTO {
 		this.cpf = resident.getCpf();
 	}
 
-	public CreateResidentRequestDTO(Long id, String uuid, String name, String lastName, LocalDate dateNasc, String email,
-			BigDecimal income, String cpf) {
+	public CreateResidentRequestDTO(Long id, String uuid, String name, String lastName, LocalDate dateNasc,
+			String email, BigDecimal income, String cpf) {
 		super();
-		this.id = id;
-		this.uuid = uuid;
 		this.name = name;
 		this.lastName = lastName;
 		this.dateNasc = dateNasc;
@@ -44,20 +44,20 @@ public class CreateResidentRequestDTO {
 		this.cpf = cpf;
 	}
 
-	public Long getId() {
-		return id;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public List<String> getRoles() {
+		return roles;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	public String getName() {
@@ -110,8 +110,9 @@ public class CreateResidentRequestDTO {
 
 	@Override
 	public String toString() {
-		return "ResidentDTO [id=" + id + ", uuid=" + uuid + ", name=" + name + ", lastName=" + lastName + ", dateNasc="
-				+ dateNasc + ", email=" + email + ", income=" + income + ", cpf=" + cpf + "]";
+		return "CreateResidentRequestDTO [name=" + name + ", lastName=" + lastName + ", dateNasc=" + dateNasc
+				+ ", email=" + email + ", income=" + income + ", cpf=" + cpf + ", password=" + password + ", roles="
+				+ roles + "]";
 	}
 
 }

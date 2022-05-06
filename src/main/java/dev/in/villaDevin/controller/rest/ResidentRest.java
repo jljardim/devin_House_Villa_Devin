@@ -56,7 +56,7 @@ public class ResidentRest {
 	
 	@PostMapping("/create")
 	public ResponseEntity<CreateResidentResponseDTO> createNewResident(@RequestBody CreateResidentRequestDTO resident)
-			throws SQLException,
+			throws Exception,
 	ResidentNotFoundExcetion {
 		CreateResidentResponseDTO residentCreated = this.residentService.create(resident);
 		if(residentCreated == null) {
